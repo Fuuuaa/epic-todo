@@ -1,0 +1,171 @@
+@media (max-width: 900px) {
+  .todo-container {
+    max-width: 520px;
+    padding: 20px;
+  }
+
+  .header-inside {
+    gap: 18px;
+  }
+
+  .title {
+    font-size: 1.45rem;
+  }
+
+  .input-row input {
+    padding: 10px;
+  }
+
+  .input-row button {
+    padding: 9px 12px;
+  }
+
+  .task-list li {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .app {
+    padding: 36px 12px;
+  }
+
+  .todo-container {
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 6px 24px var(--shadow);
+  }
+
+  .header-inside {
+    gap: 10px;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .input-row {
+    gap: 8px;
+  }
+
+  .input-row input {
+    padding: 9px 10px;
+    font-size: 14px;
+  }
+
+  .input-row button {
+    padding: 9px 10px;
+    font-size: 14px;
+  }
+
+  .task-list li {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .task-text {
+    font-size: 14px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .clear-btn {
+    padding: 8px 12px;
+  }
+
+  .count {
+    order: -1;
+  }
+
+  .theme-toggle .track {
+    width: 70px;
+    height: 32px;
+    padding: 0 8px;
+  }
+  .theme-toggle .thumb {
+    width: 24px;
+    height: 24px;
+    top: 4px;
+  }
+  .theme-toggle.dark .thumb {
+    transform: translateX(38px);
+  }
+
+  .confirm-box {
+    min-width: 220px;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .app {
+    padding: 28px 10px;
+  }
+
+  .title {
+    font-size: 1.05rem;
+  }
+
+  .input-row input {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .input-row button {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .task-text {
+    font-size: 13px;
+  }
+
+  .confirm-box {
+    min-width: 200px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .edit-btn,
+  .delete-btn,
+  .clear-btn,
+  .input-row button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    padding: 6px 8px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  .app,
+  .todo-container,
+  .input-row,
+  .footer,
+  .task-list li.added {
+    animation-duration: 0.35s;
+  }
+}
