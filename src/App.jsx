@@ -129,7 +129,7 @@ export default function App() {
     <main className="app">
       <section className="todo-container">
         <header className="header-inside">
-          <h1 className="title">EpicToDo</h1>
+          <h1 className="title">UpNext</h1>
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
         </header>
 
