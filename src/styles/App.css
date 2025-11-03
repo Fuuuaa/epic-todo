@@ -50,7 +50,7 @@
   background: var(--input-bg);
   color: var(--text);
   outline: none;
-  transition: box-shadow 0.25s, transform 0.1s;
+  transition: background 0.35s ease, color 0.35s ease, box-shadow 0.25s;
 }
 
 .input-row input:focus {
@@ -92,8 +92,8 @@
   background: rgba(255, 255, 255, 0.02);
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.03);
-  transition: background 0.2s ease, transform 0.15s;
-  opacity: 1; /* сразу видим элемент, анимация даёт эффект подъёма */
+  transition: background 0.35s ease, color 0.35s ease, transform 0.15s;
+  opacity: 1;
 }
 
 .task-list li:nth-child(1) {
@@ -267,9 +267,21 @@
   opacity: 0.95;
   font-size: 14px;
 }
+
 .light-theme .toast {
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
+}
+
+.light-theme .task-list li {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+.light-theme .input-row input {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #1a1a1a;
 }
 
 @keyframes fadeIn {
