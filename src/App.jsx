@@ -5,6 +5,7 @@ import "./styles/responsive.css";
 
 export default function App() {
   const [text, setText] = useState("");
+  const sanitize = (str) => str.replace(/[<>"']/g, "");
   const [tasks, setTasks] = useState(() => {
     try {
       const saved = localStorage.getItem("tasks");
@@ -52,7 +53,7 @@ export default function App() {
   };
 
   const addTask = () => {
-    const trimmed = text.trim();
+    const trimmed = sanitize(text.trim());
     if (!trimmed) return;
     if (trimmed.length > 22) {
       showToast("Ограничение: максимум 22 символа");
@@ -102,7 +103,7 @@ export default function App() {
   };
 
   const saveEdit = () => {
-    const trimmed = text.trim();
+    const trimmed = sanitize(text.trim());
     if (!trimmed) return;
     if (trimmed.length > 22) {
       showToast("Ограничение: максимум 22 символа");
