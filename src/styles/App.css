@@ -4,7 +4,6 @@
   align-items: center;
   padding: 60px 16px;
   min-height: 100vh;
-  animation: fadeIn 0.6s ease-out;
 }
 
 .todo-container {
@@ -14,7 +13,7 @@
   padding: 22px;
   border-radius: 12px;
   box-shadow: 0 8px 30px var(--shadow);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 2px solid var(--border-color);
   animation: slideUp 0.6s ease-out;
 }
 
@@ -34,6 +33,7 @@
 }
 
 .input-row {
+  position: relative;
   display: flex;
   gap: 10px;
   margin-bottom: 18px;
@@ -46,16 +46,25 @@
   flex: 1;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 2px solid transparent;
+  border: 2px solid var(--border-color);
   background: var(--input-bg);
   color: var(--text);
   outline: none;
-  transition: background 0.35s ease, color 0.35s ease, box-shadow 0.25s;
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease,
+    box-shadow 0.25s;
 }
 
 .input-row input:focus {
-  box-shadow: 0 0 4px 1px var(--accent);
+  border-color: transparent;
+  box-shadow: 0 0 5px 2px var(--accent);
   transform: translateY(-1px);
+  background: var(--input-bg);
+}
+
+.light-theme .input-row input:focus {
+  border-color: transparent;
+  box-shadow: 0 0 6px 3px rgba(230, 57, 70, 0.6);
+  background: #fff;
 }
 
 .input-row button {
@@ -89,31 +98,10 @@
   align-items: center;
   padding: 12px;
   margin-bottom: 10px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-secondary);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  border: 2px solid var(--border-color);
   transition: background 0.35s ease, color 0.35s ease, transform 0.15s;
-  opacity: 1;
-}
-
-.task-list li:nth-child(1) {
-  animation-delay: 0.5s;
-}
-.task-list li:nth-child(2) {
-  animation-delay: 0.6s;
-}
-.task-list li:nth-child(3) {
-  animation-delay: 0.7s;
-}
-.task-list li:nth-child(4) {
-  animation-delay: 0.8s;
-}
-.task-list li:nth-child(5) {
-  animation-delay: 0.9s;
-}
-
-.task-list li:hover {
-  background: rgba(255, 255, 255, 0.05);
 }
 
 .task-list li.completed .task-text {
@@ -156,13 +144,6 @@
   opacity: 0.8;
 }
 
-.empty {
-  text-align: center;
-  opacity: 0.6;
-  margin: 20px 0;
-  animation: fadeIn 0.8s ease forwards;
-}
-
 .footer {
   display: flex;
   justify-content: space-between;
@@ -175,7 +156,7 @@
 
 .clear-btn {
   background: transparent;
-  border: 1px solid var(--accent);
+  border: 2px solid var(--accent);
   color: var(--accent);
   padding: 6px 10px;
   border-radius: 8px;
@@ -190,6 +171,21 @@
 
 .count {
   opacity: 0.7;
+}
+
+.toast {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 90;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  opacity: 0.95;
+  font-size: 14px;
 }
 
 .confirm-overlay {
@@ -207,7 +203,7 @@
   padding: 18px;
   border-radius: 10px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 2px solid var(--border-color);
   min-width: 260px;
   text-align: center;
 }
@@ -221,20 +217,17 @@
 
 .btn-cancel {
   background: transparent;
-  border: 1px solid rgba(128, 128, 128, 0.3);
+  border: 2px solid rgba(128, 128, 128, 0.3);
   color: var(--text);
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease,
-    border-color 0.25s ease;
 }
 
 .btn-cancel:hover {
   color: #888;
   background: rgba(128, 128, 128, 0.08);
   border-color: rgba(128, 128, 128, 0.45);
-  box-shadow: 0 0 6px rgba(128, 128, 128, 0.25);
 }
 
 .btn-delete {
@@ -253,66 +246,51 @@
   box-shadow: 0 0 8px var(--accent);
 }
 
-.toast {
-  position: fixed;
-  bottom: 26px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 8px;
-  z-index: 90;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-  opacity: 0.95;
-  font-size: 14px;
+.limit-warning {
+  position: absolute;
+  top: -26px;
+  right: 95px;
+  font-size: 12px;
+  color: var(--accent);
+  background: rgba(0, 0, 0, 0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(-5px);
+  animation: showLimit 1.2s forwards;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
-.light-theme .toast {
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
+.light-theme .limit-warning {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--accent);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
 }
 
-.light-theme .task-list li {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
+.empty {
+  text-align: center;
+  opacity: 0.6;
+  font-size: 1rem;
+  margin-top: 20px;
+  animation: fadeIn 0.8s ease forwards;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-.light-theme .input-row input {
-  background: #fff;
-  border: 1px solid #ccc;
-  color: #1a1a1a;
-}
-
-@keyframes fadeIn {
-  from {
+@keyframes showLimit {
+  0% {
     opacity: 0;
-    transform: translateY(5px);
+    transform: translateY(-5px);
   }
-  to {
+  10%,
+  90% {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-@keyframes slideUp {
-  from {
+  100% {
     opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes taskAppear {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-5px);
   }
 }

@@ -100,11 +100,13 @@
     height: 32px;
     padding: 0 8px;
   }
+
   .theme-toggle .thumb {
     width: 24px;
     height: 24px;
     top: 4px;
   }
+
   .theme-toggle.dark .thumb {
     transform: translateX(38px);
   }

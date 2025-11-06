@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import "./styles/ThemeToggle.css";
+import "../styles/ThemeToggle.css";
 
 const ThemeToggle = ({ theme, toggleTheme }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 50);
-    return () => clearTimeout(timer);
+    setMounted(true);
   }, []);
 
   const isDark = theme === "dark";

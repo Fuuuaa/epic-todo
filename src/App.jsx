@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "./components/ThemeToggle";
+import TaskList from "./components/TaskList";
+import ConfirmDialog from "./components/ConfirmDialog";
 import "./styles/App.css";
 import "./styles/responsive.css";
 
 export default function App() {
   const [text, setText] = useState("");
-  const sanitize = (str) => str.replace(/[<>"']/g, "");
   const [tasks, setTasks] = useState(() => {
     try {
       const saved = localStorage.getItem("tasks");
@@ -17,44 +18,71 @@ export default function App() {
 
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem("theme");
-    return saved ? saved : "light";
+    return saved || "light";
   });
 
   const [editingId, setEditingId] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [limitWarning, setLimitWarning] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const inputRef = useRef(null);
 
-  const [toast, setToast] = useState(null);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const sanitize = (str) => str.replace(/[<>"']/g, "");
+
+  const showToast = (msg) => {
+    setToast(msg);
+    clearTimeout(window.__app_toast_timer);
+    window.__app_toast_timer = setTimeout(() => setToast(null), 2000);
+  };
 
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
+    const isLight = theme === "light";
 
-    if (theme === "light") {
-      root.classList.add("light-theme");
-      body.classList.add("light-theme");
-    } else {
-      root.classList.remove("light-theme");
-      body.classList.remove("light-theme");
+    root.classList.toggle("light-theme", isLight);
+    body.classList.toggle("light-theme", isLight);
+
+    try {
+      localStorage.setItem("theme", theme);
+    } catch (err) {
+      console.warn("Не удалось сохранить тему:", err);
     }
-    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () =>
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    const timeout = setTimeout(() => {
+      try {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      } catch (err) {
+        console.warn("Не удалось сохранить задачи:", err);
+      }
+    }, 250);
+
+    return () => clearTimeout(timeout);
   }, [tasks]);
 
-  const showToast = (msg) => {
-    setToast(msg);
-    setTimeout(() => setToast(null), 2000);
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+
+    if (val.length <= 22) {
+      setText(val);
+      setLimitWarning(false);
+    }
+
+    if (val.length === 22) {
+      setLimitWarning(true);
+      setTimeout(() => setLimitWarning(false), 1200);
+    }
   };
 
   const addTask = () => {
     const trimmed = sanitize(text.trim());
     if (!trimmed) return;
+
     if (trimmed.length > 22) {
       showToast("Ограничение: максимум 22 символа");
       return;
@@ -75,15 +103,20 @@ export default function App() {
         );
       }
     });
+
+    showToast("Задача добавлена");
   };
 
-  const toggleTask = (id) =>
+  const toggleTask = (id) => {
     setTasks((prev) =>
       prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
     );
+  };
 
-  const deleteTask = (id) =>
+  const deleteTask = (id) => {
     setTasks((prev) => prev.filter((t) => t.id !== id));
+    showToast("Задача удалена");
+  };
 
   const startEdit = (id) => {
     const task = tasks.find((t) => t.id === id);
@@ -105,6 +138,7 @@ export default function App() {
   const saveEdit = () => {
     const trimmed = sanitize(text.trim());
     if (!trimmed) return;
+
     if (trimmed.length > 22) {
       showToast("Ограничение: максимум 22 символа");
       return;
@@ -115,12 +149,14 @@ export default function App() {
     );
     setEditingId(null);
     setText("");
+    showToast("Изменения сохранены");
   };
 
   const handleClearAll = () => setShowConfirm(true);
   const confirmClearAll = () => {
     setTasks([]);
     setShowConfirm(false);
+    showToast("Все задачи удалены");
   };
   const cancelClearAll = () => setShowConfirm(false);
 
@@ -138,7 +174,7 @@ export default function App() {
           <input
             ref={inputRef}
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={(e) =>
               e.key === "Enter" && (editingId ? saveEdit() : addTask())
             }
@@ -149,35 +185,17 @@ export default function App() {
           <button onClick={editingId ? saveEdit : addTask}>
             {editingId ? "Сохранить" : "Добавить"}
           </button>
+          {limitWarning && (
+            <span className="limit-warning">Достигнут лимит 22 символа</span>
+          )}
         </article>
 
-        {tasks.length === 0 ? (
-          <p className="empty">Здесь пока пусто...</p>
-        ) : (
-          <ul className="task-list">
-            {tasks.map((task) => (
-              <li key={task.id} className={task.completed ? "completed" : ""}>
-                <span className="task-text" onClick={() => toggleTask(task.id)}>
-                  {task.text}
-                </span>
-                <article className="actions">
-                  <button
-                    className="edit-btn"
-                    onClick={() => startEdit(task.id)}
-                  >
-                    ✎
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteTask(task.id)}
-                  >
-                    ✖
-                  </button>
-                </article>
-              </li>
-            ))}
-          </ul>
-        )}
+        <TaskList
+          tasks={tasks}
+          toggleTask={toggleTask}
+          startEdit={startEdit}
+          deleteTask={deleteTask}
+        />
 
         <footer className="footer">
           <span className="count">Активных задач: {activeCount}</span>
@@ -189,19 +207,10 @@ export default function App() {
         {toast && <div className="toast">{toast}</div>}
 
         {showConfirm && (
-          <section className="confirm-overlay" onClick={cancelClearAll}>
-            <div className="confirm-box" onClick={(e) => e.stopPropagation()}>
-              <p>Удалить все задачи?</p>
-              <div className="confirm-actions">
-                <button className="btn-cancel" onClick={cancelClearAll}>
-                  Отмена
-                </button>
-                <button className="btn-delete" onClick={confirmClearAll}>
-                  Удалить
-                </button>
-              </div>
-            </div>
-          </section>
+          <ConfirmDialog
+            onCancel={cancelClearAll}
+            onConfirm={confirmClearAll}
+          />
         )}
       </section>
     </main>

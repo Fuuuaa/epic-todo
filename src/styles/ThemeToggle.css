@@ -24,7 +24,7 @@
   padding: 0 10px;
   background: var(--bg-secondary);
   box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
-  transition: background 0.25s ease;
+  transition: background 0.35s ease, box-shadow 0.35s ease;
 }
 
 .icon {
@@ -63,9 +63,3 @@
 .theme-toggle:active .thumb {
   transform: scale(0.95);
 }
-
-.theme-toggle:not(.mounted) .thumb {
-  transition: none;
-  transform: translateX(0);
-}
-

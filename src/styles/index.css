@@ -5,6 +5,7 @@
   --accent: #8b5cf6;
   --shadow: rgba(0, 0, 0, 0.5);
   --input-bg: #1a1a1a;
+  --border-color: rgba(255, 255, 255, 0.05);
 }
 
 .light-theme {
@@ -13,7 +14,8 @@
   --text: #1a1a1a;
   --accent: #e63946;
   --shadow: rgba(0, 0, 0, 0.12);
-  --input-bg: #f5f5f5;
+  --input-bg: #fdfdfd;
+  --border-color: #d1d1d1;
 }
 
 * {
@@ -25,17 +27,14 @@
 html,
 body,
 #root {
-  height: 100%;
   min-height: 100%;
-}
-
-body {
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  height: 100%;
   background: var(--bg);
   color: var(--text);
-  transition: background 0.35s ease, color 0.35s ease;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background 0.35s ease, color 0.35s ease;
   overflow-x: hidden;
 }
 
@@ -44,4 +43,37 @@ body {
   max-width: 1100px;
   margin: 0 auto;
   padding: 24px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes taskAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
