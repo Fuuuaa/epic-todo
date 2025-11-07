@@ -66,6 +66,16 @@ src/
 
  ---
 
+## Screenshots / GIFs
+
+![Limit Warning](./demo/add-limitToDo.gif)
+![Action](./demo/actionsToDo.gif)
+![Delete Task](./demo/deletToDo.gif)
+![Theme Toggle](./demo/themeToDo.gif)
+![Reset page](./demo/resetToDo.gif)
+
+ ---
+
 ## Run Locally
 
 ```bash
@@ -80,16 +90,6 @@ npm install
 
 # Start the dev server
 npm run dev
-
- ---
-
-Screenshots / GIFs
-
-![Limit Warning](./demo/add-limitToDo.gif)
-![Action](./demo/actionToDo.gif)
-![Delete Task](./demo/deletToDo.gif)
-![Theme Toggle](./demo/themeToDo.gif)
-![Reset page](./demo/resetToDo.gif)
 
  ---
 
